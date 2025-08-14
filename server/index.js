@@ -1,36 +1,31 @@
-
+// index.js
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import http from "http";
 import dotenv from "dotenv";
 import { Server } from "socket.io";
+import teacherRoutes from "./routes/teacherRoutes.js";
 
-// Import your controllers
-import { TeacherLogin } from "./controllers/login.js";
-import { createPoll, voteOnOption, getPolls } from "./controllers/poll.js";
+import { createPoll, voteOnOption } from "./controllers/poll.js";
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const port = process.env.PORT || 3000;
-const DB = process.env.MONGO_DB_URL;
+// Routes
+app.use("/", teacherRoutes);
 
-// MongoDB connection
+const port = process.env.PORT || 3000;
+const DB = process.env.MONGO_URI;
+
 mongoose
   .connect(DB)
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((e) => {
-    console.error("Failed to connect to MongoDB:", e);
-  });
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((e) => console.error("Failed to connect to MongoDB:", e));
 
-// Create HTTP server and socket.io instance
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
@@ -43,7 +38,6 @@ const io = new Server(server, {
 let votes = {};
 let connectedUsers = {};
 
-// Socket.io events
 io.on("connection", (socket) => {
   console.log("User connected:", socket.id);
 
@@ -97,20 +91,6 @@ io.on("connection", (socket) => {
   });
 });
 
-// Routes
-app.get("/", (req, res) => {
-  res.send("Polling System Backend");
-});
-
-app.post("/teacher-login", (req, res) => {
-  TeacherLogin(req, res);
-});
-
-app.get("/polls/:teacherUsername", (req, res) => {
-  getPolls(req, res);
-});
-
-// Start server
 server.listen(port, () => {
   console.log(`Server running on port ${port}...`);
 });

@@ -1,6 +1,6 @@
 import Teacher from "../models/teacher.js"; 
-console.log("Teacher import:", Teacher);
-console.log("Type of Teacher:", typeof Teacher);
+// console.log("Teacher import:", Teacher);
+// console.log("Type of Teacher:", typeof Teacher);
 
 export const TeacherLogin = async (req, res) => {
   try {
@@ -8,8 +8,7 @@ export const TeacherLogin = async (req, res) => {
     const teacherUsername = `teacher${randomNumber}`;
 
     const newTeacher = new Teacher({ username: teacherUsername });
-    await newTeacher.save(); // ✅ await is better for DB writes
-
+    await newTeacher.save(); 
     res.status(201).json({
       status: "success",
       username: newTeacher.username,
