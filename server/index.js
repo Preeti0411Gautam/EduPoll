@@ -13,7 +13,6 @@ connectDB();
 const app = express();
 
 const allowedOrigins = [
-  "https://edu-poll-dqmv9369y-preeti0411gautams-projects.vercel.app/",
   "https://edu-poll.vercel.app/",
   "http://localhost:5173",
 ];
@@ -37,7 +36,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin:  "*",
     methods: ["GET", "POST"],
     credentials: true,
   },
