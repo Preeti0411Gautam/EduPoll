@@ -11,21 +11,42 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors());
+
+const allowedOrigins = [
+  "https://edu-poll.vercel.app",
+  "http://localhost:5173",
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+}));
+
 app.use(express.json());
 
-// Routes
 app.use("/", teacherRoutes);
-app.get("/", (req, res) => res.send("Hello there"));
+
+app.get("/", (req, res) => {
+  res.send("Hello there");
+});
 
 const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 
 const io = new Server(server, {
-  cors: { origin: "*", methods: ["GET", "POST"], credentials: true },
+  cors: {
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
 });
 
-// Socket Logic
 pollSocket(io);
 
 server.listen(port, () => {
