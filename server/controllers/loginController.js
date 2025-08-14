@@ -1,6 +1,4 @@
-import Teacher from "../models/teacher.js"; 
-// console.log("Teacher import:", Teacher);
-// console.log("Type of Teacher:", typeof Teacher);
+import Teacher from "../models/teacherModel.js"; 
 
 export const TeacherLogin = async (req, res) => {
   try {

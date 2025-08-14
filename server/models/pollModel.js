@@ -1,4 +1,3 @@
-// pollModel.js (ES6 module)
 import mongoose from "mongoose";
 
 const optionSchema = new mongoose.Schema({
