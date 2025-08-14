@@ -1,7 +1,7 @@
 import Poll from "../models/pollModel.js";
 
 export const createPoll = async (pollData) => {
-  const newPoll = new Poll(pollData); 
+  let newPoll = new Poll(pollData); 
   await newPoll.save();
   return newPoll;
 };

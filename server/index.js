@@ -13,7 +13,7 @@ connectDB();
 const app = express();
 
 const allowedOrigins = [
-  "https://edu-poll.vercel.app",
+  "https://edu-poll.vercel.app/",
   "http://localhost:5173",
 ];
 
